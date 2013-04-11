@@ -1,4 +1,5 @@
 var app = module.exports = require('appjs');
+var fs = require('fs');
 
 app.serveFilesFrom(__dirname + '/content');
 
@@ -72,7 +73,7 @@ var statusIcon = app.createStatusIcon({
 });
 
 var window = app.createWindow({
-  width  : 640,
+  width  : 1024,
   height : 460,
   icons  : __dirname + '/content/icons'
 });
@@ -102,3 +103,30 @@ window.on('ready', function(){
 window.on('close', function(){
   console.log("Window Closed");
 });
+
+// data file
+var data_file_path = './data.txt';
+
+// handle loading the data
+app.router.post('/load', function(request, response, next){
+  console.log('Loading..');
+	fs.readFile(data_file_path, function (err, data) {
+	  if (err) throw err;
+	  console.log('Loading successful');
+	  response.send(data);
+	});
+})
+
+// handle saving the data
+app.router.post('/save', function(request, response, next){
+  console.log('Saving..');
+	fs.writeFile(data_file_path, request.post, function(err) {
+    if(err) {
+    	console.log('Saving error: ' + err);
+      response.send({saved:false,error:err});
+    } else {
+    	console.log('Saving successful');
+      response.send({saved:true});
+    }
+	});
+})
