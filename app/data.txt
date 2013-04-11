@@ -1,1 +1,1 @@
-{"stories":["P,B12,Learn Kanban","D,B13,Download Kanban Everywhere",""],"states":["I,Inbox","P,In Progress","D,Done"]}
+{"stories":["P,B12,Learn Kanban","D,B13,Download Kanban Everywhere",""],"states":["I,Assess","P,In Progress","D,Done"]}
