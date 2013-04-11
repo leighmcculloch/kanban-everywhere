@@ -19,28 +19,24 @@
 <div id="output"></div>
 <div class="clear"></div>
 
-<textarea id="data_output" rows="20" cols="100">
-</textarea>
+<div id="outputs">
+	Stories:<br/>
+	<textarea id="data_output" rows="20" cols="100">
+	</textarea><br/><br/>
 
-<textarea id="states_output" rows="5" cols="100">
-</textarea>
+	States:<br/>
+	<textarea id="states_output" rows="5" cols="100">
+	</textarea><br/><br/>
+
+	State Stylesheet:<br/>
+	<textarea id="states_css_output" rows="10" cols="100">
+	</textarea><br/>
+</div>
 <!-- The HTML ends here -->
 
 <!-- Color definitions for the boxes. Queues are all grey to not distract
      from the real work being done -->
-<style type="text/css">
-<!--
-	#P .box { background-color: #FFFF00  ; color: #000000;}
-	#P_Q .box { background-color: #F0F0F0; color: #606060;}
-	#D .box { background-color: #FFC300; color: #000000;}
-	#D_Q .box { background-color: #F0F0F0; color: #606060;}
-	#DE .box { background-color: #B5DBFF  ; color: #000000;}
-	#DE_Q .box { background-color: #F0F0F0; color: #606060;}
-	#T .box { background-color: #A5C700; color: #ffffff;}
-	#T_Q .box { background-color: #F0F0F0; color: #606060;}
-	#R .box { background-color: #9CCFFF  ; color: #000000;}
-	#R_Q .box { background-color: #F0F0F0; color: #606060;}
-	-->
+<style type="text/css" id="css">
 </style>
 
 <!-- HERE ARE DRAGONS, DON'T CHANGE ! -->
@@ -92,8 +88,7 @@
 
 <script language="JavaScript">
 $("#board_link").hide();
-$("#data_output").hide();
-$("#states_output").hide();
+$("#outputs").hide();
 
 var init_states = function(states_input) {
     var states = {}
@@ -136,7 +131,7 @@ var create_list = function(board, state) {
 }
 
 var create_column = function(board, state, headline) {
-	   var state_column = $("<div class=\"dp10" + ((! /_Q$/.test(state)) ? "" : " queue_column")+ "\"></div>")
+	   var state_column = $("<div id=\"col-"+state+"\" class=\"dp10" + ((! /_Q$/.test(state)) ? "" : " queue_column")+ "\"></div>")
 	   state_column.append($("<div class=\"headline\">" + headline + "</div>"));
 	   state_column.append(create_list(board, state));
 	   state_column.data("state", state);
@@ -184,12 +179,14 @@ function update_data_output() {
 function save_board() {
 	var stories = $("#data_output").val().split('\n');
 	var states = $("#states_output").val().split('\n');
+	var states_css = $("#states_css_output").val();
 	$.ajax({  
 	  type: 'POST',  
 	  url: '/save', 
 	  data: JSON.stringify({
 	  	stories: stories,
-	  	states: states
+	  	states: states,
+	  	states_css: states_css
 	  })
 	});
 }
@@ -199,23 +196,22 @@ $("#board_link").click(function () {
 
 	var stories = $("#data_output").val().split('\n');
 	var states = $("#states_output").val().split('\n');
+	var states_css = $("#states_css_output").val();
+	$("#css").html(states_css);
   var state_data = init_states(states);
   var app_data = { board: init_board(stories), states: state_data.states, states_order: state_data.states_order}
   $("#output").empty();
   $("#output").append(create_board(app_data));
-
   $("#output").show();
   $("#data_link").show();
-  $("#data_output").hide();
-  $("#states_output").hide();
+  $("#outputs").hide();
   $("#board_link").hide();
 })
 
 $("#data_link").click(function () {
   $("#output").hide();
   $("#data_link").hide();
-  $("#data_output").show();
-  $("#states_output").show();
+  $("#outputs").show();
   $("#board_link").show();
 });
 
@@ -224,7 +220,8 @@ $.ajax({
   url: '/load',
   dataType: 'json',  
   success: function (data) {
-  console.log(data);
+	  $("#css").html(data.states_css);
+	  $("#states_css_output").val(data.states_css);
 		$("#states_output").val(data.states.join('\n'));
 		var state_data = init_states(data.states);
 		var app_data = { board: init_board(data.stories), states: state_data.states, states_order: state_data.states_order}
