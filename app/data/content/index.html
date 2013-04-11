@@ -50,7 +50,7 @@
      ul { list-style: none; margin: 0 0 0 0; padding: 0 0 0 0;}
 	 body { font-family: Helvetica; }
 	 .box { font-size: 80%; padding: 0.2em; border: 1px solid black; margin-bottom: 1em; margin-right: 5px;}
-	 .dp10 {width:9%;  float:left;  display: inline;  *margin-right:-1px; }
+	 .dp10 { float:left;  display: inline;  *margin-right:-1px; }
 	 .clear {clear:both;}
 	 .headline { font-weight: bold; height: 3em; color: #000000;}
 	 .queue_column .headline { font-weight: bold; height: 3em; color: #d0d0d0;}
@@ -139,6 +139,8 @@ var create_column = function(board, state, headline) {
 }
 
 var create_board = function(app_data) {
+	$("#output").empty();
+	
 	var table = $("<div id=\"board\"></div>");
 	var ids = "";
 	for (j=0; j< app_data.states_order.length; j++) {
@@ -161,7 +163,13 @@ var create_board = function(app_data) {
 			save_board();
 		}
 	});
-	return table;
+	
+	$("#output").append(table);
+	
+	// set the column width so the table fits the full length
+	var visible_col_count = $(".dp10:visible").length;
+	var visible_col_width_percent = 100.0 / visible_col_count;
+	$(".dp10").css("width",visible_col_width_percent+"%");
 }
 
 function update_data_output() {
@@ -200,9 +208,8 @@ $("#board_link").click(function () {
 	$("#css").html(states_css);
   var state_data = init_states(states);
   var app_data = { board: init_board(stories), states: state_data.states, states_order: state_data.states_order}
-  $("#output").empty();
-  $("#output").append(create_board(app_data));
   $("#output").show();
+	create_board(app_data);
   $("#data_link").show();
   $("#outputs").hide();
   $("#board_link").hide();
@@ -224,9 +231,8 @@ $.ajax({
 	  $("#states_css_output").val(data.states_css);
 		$("#states_output").val(data.states.join('\n'));
 		var state_data = init_states(data.states);
-		var app_data = { board: init_board(data.stories), states: state_data.states, states_order: state_data.states_order}
-		$("#output").empty();
-		$("#output").append(create_board(app_data));
+		var app_data = { board: init_board(data.stories), states: state_data.states, states_order: state_data.states_order};
+		create_board(app_data);
 		update_data_output();
   }
 });
