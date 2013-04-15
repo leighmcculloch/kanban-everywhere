@@ -122,7 +122,7 @@ var create_list = function(board, state) {
 	   var list = $("<ul class=\"state\" id=\"" + state + "\"></ul>");
        if (board[state]) {
          for (var i=0, len=board[state].length; i<len; i++) {
-            var story_element = $("<li><div class=\"box box_" + state  + "\">" + board[state][i][1] + " " + board[state][i][2] + "</div></li>");
+            var story_element = $("<li><div class=\"box box_" + state  + " boxgroup_" + board[state][i][1] + "\">" + board[state][i][1] + " " + board[state][i][2] + "</div></li>");
             story_element.data("story",  board[state][i]);
 			list.append(story_element);
      	 }
