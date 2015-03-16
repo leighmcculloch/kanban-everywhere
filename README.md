@@ -1,24 +1,23 @@
-== Kanban Everywhere ==
+# Kanban Everywhere
 I needed a quick no-fuss non-hosted kanban tool. Simple-Kanban is 
 a great kanban tool, I just wrapped it up and added save/load 
 functionality.
 
 
-== Download ==
+## Download
 https://bitbucket.org/leighmcculloch/kanban-everywhere/downloads#tags
 
 
-== Install ==
+## Install
 No need to install, just download the latest tag from the URL above
 and for Windows run the app.exe and for Mac open a Terminal window
 and run ./app.sh.
 
 
-== Thanks to ==
+## Thanks
 Thanks to @appjs, @nodejs and @codemonkeyism!
 
-
-== Kanban Everywhere License ==
+## Kanban Everywhere License
 Copyright (c) 2013 Leigh McCulloch
 
 Permission is hereby granted, free of charge, to any person 
@@ -43,8 +42,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 
-== Simple Kanban License ==
-	 Copyright (c) 2009 Stephan Schmidt
+## Simple Kanban License
+Copyright (c) 2009 Stephan Schmidt
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
